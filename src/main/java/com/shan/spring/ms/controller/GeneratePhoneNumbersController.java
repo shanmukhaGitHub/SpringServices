@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +14,7 @@ import com.shan.spring.ms.exception.GeneratePhoneBusinessExpection;
 import com.shan.spring.ms.model.AlphaNumericPojo;
 import com.shan.spring.ms.service.GeneratePhoneService;
 
-
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class GeneratePhoneNumbersController {
 	
@@ -28,8 +29,10 @@ public class GeneratePhoneNumbersController {
 	public ResponseEntity <AlphaNumericPojo> getPhoneCombinations(@PathVariable String phoneNumber){
 		
 		try {
-			log.info("call service to generate numbers");
+			log.info("call service to generate numbers"+phoneNumber);
+			
 			 ResponseEntity<AlphaNumericPojo> responseEntity = new ResponseEntity<>( service.getPhoneCombinationList(phoneNumber),HttpStatus.OK);
+			 log.info("Call completed");
 			 return responseEntity;
 		}catch (GeneratePhoneBusinessExpection e) {
 			log.info("Exception occured caused by {}"+e.getCause());
