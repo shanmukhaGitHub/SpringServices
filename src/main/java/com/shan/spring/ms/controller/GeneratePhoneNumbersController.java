@@ -26,18 +26,14 @@ public class GeneratePhoneNumbersController {
 	GeneratePhoneService service;
 	
 	@GetMapping("/generatePhoneCombinations/{phoneNumber}")
-	public ResponseEntity <AlphaNumericPojo> getPhoneCombinations(@PathVariable String phoneNumber){
+	public ResponseEntity <AlphaNumericPojo> getPhoneCombinations(@PathVariable String phoneNumber) throws GeneratePhoneBusinessExpection{
 		
-		try {
 			log.info("call service to generate numbers"+phoneNumber);
 			
 			 ResponseEntity<AlphaNumericPojo> responseEntity = new ResponseEntity<>( service.getPhoneCombinationList(phoneNumber),HttpStatus.OK);
 			 log.info("Call completed");
 			 return responseEntity;
-		}catch (GeneratePhoneBusinessExpection e) {
-			log.info("Exception occured caused by {}"+e.getCause());
-			return new ResponseEntity(HttpStatus.EXPECTATION_FAILED);
-		}
+		
 		}
 
 }

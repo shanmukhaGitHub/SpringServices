@@ -3,9 +3,12 @@ package com.shan.spring.ms.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shan.spring.ms.controller.GeneratePhoneNumbersController;
 import com.shan.spring.ms.exception.GeneratePhoneBusinessExpection;
 import com.shan.spring.ms.model.AlphaNumericPojo;
 
@@ -14,6 +17,8 @@ import com.shan.spring.ms.model.AlphaNumericPojo;
 public class GeneratePhoneService {
 	
 	
+	private static final Logger log = LoggerFactory.getLogger(GeneratePhoneService.class);
+
 	 // String array to store keypad characters 
     static final String codes[] 
         = { " ", "abc", "def", 
@@ -45,6 +50,10 @@ public class GeneratePhoneService {
 		
     	if(null!=phoneNumer &&( phoneNumer.length()<7 || phoneNumer.length()>10)){
     		throw new GeneratePhoneBusinessExpection("6000","Phone number length is incorrect", "Phone number should be between 7 to 10 characters");
+    	}
+    	log.info(phoneNumer.replaceAll("^[0-9]", "") +","+phoneNumer.replaceAll("-?\\d+", ""));
+    	if(phoneNumer.replaceAll("-?\\d+", "").length()>0) {
+    		throw new GeneratePhoneBusinessExpection("6001","Phone number should numbers only","Numerics are allowed");
     	}
 		
 	}
